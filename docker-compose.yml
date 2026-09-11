@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: farm2market-app
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://farm2market_user:farm2market_secure_password_2026@postgres:5432/farm2market_db?schema=public
+      - JWT_SECRET=farm2market_production_jwt_secret_doca_2026
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - SERP_API_KEY=${SERP_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: farm2market-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: farm2market_user
+      POSTGRES_PASSWORD: farm2market_secure_password_2026
+      POSTGRES_DB: farm2market_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U farm2market_user -d farm2market_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

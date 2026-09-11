@@ -1,0 +1,497 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 1. Users Module
+model User {
+  id                  String               @id @default(uuid())
+  email               String               @unique
+  password            String
+  name                String
+  mobile              String
+  role                String               @default("FARMER") // FARMER, FPO, BUYER, CONSUMER, ADMIN
+  location            String
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  farmerProfile       FarmerProfile?
+  fpoProfile          FPOProfile?
+  buyerProfile        BuyerProfile?
+  consumerProfile     ConsumerProfile?
+  adminProfile        AdminProfile?
+
+  farms               Farm[]
+  cropPlans           CropPlan[]
+  cropBatches         CropBatch[]          @relation("UserCropBatches")
+  marketplaceListings MarketplaceListing[]
+  requirements        BuyerRequirement[]   @relation("UserRequirements")
+  sentOffers          Offer[]              @relation("SentOffers")
+  receivedOffers      Offer[]              @relation("ReceivedOffers")
+  buyerOrders         Order[]              @relation("BuyerOrders")
+  farmerOrders        Order[]              @relation("FarmerOrders")
+  notifications       Notification[]
+  negotiations        Negotiation[]
+  inspections         QualityInspection[]
+}
+
+// 2. Farmers Module
+model FarmerProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  farmLocation    String
+  farmSizeAcres   Float    @default(5.0)
+  preferredCrops  String   @default("Cotton, Soybean, Wheat")
+  trustScore      Int      @default(94)
+  fulfillmentRate Float    @default(97.5)
+  totalEarnings   Float    @default(185000.0)
+  createdAt       DateTime @default(now())
+}
+
+// 3. Buyers Module
+model BuyerProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName  String
+  buyerType     String   @default("RETAILER") // RETAILER, RESTAURANT, HOTEL, FOOD_PROCESSOR, SUPERMARKET, WHOLESALER, INSTITUTIONAL
+  location      String
+  trustScore    Int      @default(96)
+  paymentScore  Float    @default(98.0)
+  createdAt     DateTime @default(now())
+}
+
+// 4. FPOs Module
+model FPOProfile {
+  id              String      @id @default(uuid())
+  userId          String      @unique
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fpoName         String
+  location        String
+  memberCount     Int         @default(950)
+  trustScore      Int         @default(95)
+  registeredSince String      @default("2021")
+  members         FPOMember[]
+  createdAt       DateTime    @default(now())
+}
+
+// 5. Admins Module
+model AdminProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleTitle     String   @default("DoCA Nodal Officer")
+  department    String   @default("Price Monitoring Division")
+  regionScope   String   @default("National")
+  createdAt     DateTime @default(now())
+}
+
+// 6. Crops Master Catalog
+model Crop {
+  id                    String   @id @default(uuid())
+  cropName              String   @unique
+  category              String   // Fiber, Grain, Pulse, Vegetable, Fruit, Oilseed
+  season                String   @default("KHARIF") // KHARIF, RABI, SUMMER, YEAR_ROUND
+  typicalYieldPerAcreKg Float
+  baseMspPerQuintal     Float
+  modalMarketPricePerKg Float
+  shelfLifeHours        Int      @default(72)
+  perishability         String   @default("MEDIUM")
+  description           String?
+  imageUrl              String?
+  createdAt             DateTime @default(now())
+}
+
+// 7. Farms Module
+model Farm {
+  id             String      @id @default(uuid())
+  farmerId       String
+  farmer         User        @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  farmName       String      @default("Primary Family Farm")
+  location       String      // e.g. "Amravati, Maharashtra"
+  district       String      @default("Amravati")
+  state          String      @default("Maharashtra")
+  sizeAcres      Float       @default(5.0)
+  soilType       String      @default("Regur Black Cotton")
+  irrigationType String      @default("DRIP_MICRO_IRRIGATION")
+  latitude       Float?
+  longitude      Float?
+  cropBatches    CropBatch[]
+  cropPlans      CropPlan[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+// 8. Crop Batches Module
+model CropBatch {
+  id                  String               @id @default(uuid())
+  farmerId            String
+  farmer              User                 @relation("UserCropBatches", fields: [farmerId], references: [id], onDelete: Cascade)
+  farmId              String?
+  farm                Farm?                @relation(fields: [farmId], references: [id], onDelete: SetNull)
+  cropName            String
+  category            String               @default("Fiber")
+  quantityKg          Float
+  remainingKg         Float
+  unit                String               @default("kg")
+  grade               String               @default("GRADE_A") // GRADE_A, GRADE_B, GRADE_C
+  perishability       String               @default("LOW")     // VERY_HIGH, HIGH, MEDIUM, LOW
+  shelfLifeHours      Int                  @default(720)
+  harvestDate         DateTime
+  expectedSellingDate DateTime
+  location            String
+  storageAvailable    Boolean              @default(false)
+  passportCode        String               @unique
+  imageUrl            String?
+  status              String               @default("AVAILABLE") // AVAILABLE, COMMITTED, SOLD
+  offers              Offer[]
+  orders              Order[]
+  passport            CropPassport?
+  marketplaceListing  MarketplaceListing?
+  inspections         QualityInspection[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+// 9. Buyer Requirements Module
+model BuyerRequirement {
+  id               String   @id @default(uuid())
+  buyerId          String
+  buyer            User     @relation("UserRequirements", fields: [buyerId], references: [id], onDelete: Cascade)
+  cropName         String
+  quantityKg       Float
+  fulfilledKg      Float    @default(0)
+  grade            String   @default("GRADE_A")
+  location         String
+  requiredByDate   DateTime
+  budgetPricePerKg Float
+  isBulk           Boolean  @default(false)
+  status           String   @default("OPEN") // OPEN, PARTIALLY_FULFILLED, FULFILLED, CLOSED
+  notes            String?
+  offers           Offer[]
+  orders           Order[]
+  createdAt        DateTime @default(now())
+}
+
+// 10. FPO Members Module
+model FPOMember {
+  id          String     @id @default(uuid())
+  fpoId       String
+  fpo         FPOProfile @relation(fields: [fpoId], references: [id], onDelete: Cascade)
+  name        String
+  location    String
+  crop        String
+  quantityKg  Float
+  landAcres   Float      @default(3.0)
+  createdAt   DateTime   @default(now())
+}
+
+// 11. Marketplace Listings Module
+model MarketplaceListing {
+  id            String    @id @default(uuid())
+  cropBatchId   String    @unique
+  cropBatch     CropBatch @relation(fields: [cropBatchId], references: [id], onDelete: Cascade)
+  farmerId      String
+  farmer        User      @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  title         String
+  cropName      String
+  quantityKg    Float
+  minOrderQtyKg Float     @default(100.0)
+  pricePerKg    Float
+  grade         String    @default("GRADE_A")
+  location      String
+  isOrganic     Boolean   @default(false)
+  status        String    @default("ACTIVE") // ACTIVE, RESERVED, SOLD, DELISTED
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// 12. Offers Module
+model Offer {
+  id                String            @id @default(uuid())
+  requirementId     String?
+  requirement       BuyerRequirement? @relation(fields: [requirementId], references: [id], onDelete: SetNull)
+  cropBatchId       String?
+  cropBatch         CropBatch?        @relation(fields: [cropBatchId], references: [id], onDelete: SetNull)
+  senderId          String
+  sender            User              @relation("SentOffers", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId        String
+  receiver          User              @relation("ReceivedOffers", fields: [receiverId], references: [id], onDelete: Cascade)
+  offeredPricePerKg Float
+  quantityKg        Float
+  status            String            @default("PENDING") // PENDING, COUNTERED, ACCEPTED, REJECTED
+  notes             String?
+  negotiations      Negotiation[]
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model Negotiation {
+  id                    String   @id @default(uuid())
+  offerId               String
+  offer                 Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  senderId              String
+  sender                User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  proposedPricePerKg    Float
+  suggestedCounterPrice Float?
+  floorPricePerKg       Float?
+  rationale             String?
+  action                String   // INITIAL_OFFER, COUNTER_OFFER, ACCEPTED, REJECTED
+  createdAt             DateTime @default(now())
+}
+
+// 13. Orders Module
+model Order {
+  id                    String            @id @default(uuid())
+  buyerId               String
+  buyer                 User              @relation("BuyerOrders", fields: [buyerId], references: [id], onDelete: Cascade)
+  farmerId              String
+  farmer                User              @relation("FarmerOrders", fields: [farmerId], references: [id], onDelete: Cascade)
+  requirementId         String?
+  requirement           BuyerRequirement? @relation(fields: [requirementId], references: [id], onDelete: SetNull)
+  cropBatchId           String?
+  cropBatch             CropBatch?        @relation(fields: [cropBatchId], references: [id], onDelete: SetNull)
+  cropName              String
+  quantityKg            Float
+  pricePerKg            Float
+  totalAmount           Float
+  status                String            @default("OFFER") // OFFER, ACCEPTED, PAYMENT_SECURED, PREPARING, PICKED_UP, IN_TRANSIT, QUALITY_CHECK, DELIVERED, PAYMENT_RELEASED, COMPLETED, CANCELLED
+  deliveryAddress       String
+  estimatedDeliveryDate DateTime
+  paymentStatus         String            @default("ESCROW_HOLD") // ESCROW_HOLD, RELEASED, REFUNDED
+  escrowAmount          Float             @default(0)
+  shipment              Shipment?
+  transaction           Transaction?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+}
+
+// 14. Logistics & Shipments Module
+model Shipment {
+  id                  String   @id @default(uuid())
+  orderId             String   @unique
+  order               Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  trackingCode        String   @unique
+  originLocation      String
+  destinationLocation String
+  vehicleNumber       String   @default("MH-27-AL-7819")
+  driverName          String   @default("Sanjay Deshmukh")
+  driverPhone         String   @default("+91 98220 12345")
+  currentStage        String   @default("FARM") // FARM, COLLECTION, QUALITY_CHECK, TRANSPORT, BUYER
+  progressPercent     Int      @default(15)
+  isConsolidated      Boolean  @default(false)
+  consolidatedFarmers String?
+  savingsAmount       Float    @default(0)
+  truckCapacityKg     Float    @default(5000)
+  truckUtilizedKg     Float    @default(2000)
+  currentLat          Float?
+  currentLng          Float?
+  updatedAt           DateTime @default(now())
+}
+
+// 15. Crop Passports Module
+model CropPassport {
+  id             String    @id @default(uuid())
+  passportCode   String    @unique
+  cropBatchId    String    @unique
+  cropBatch      CropBatch @relation(fields: [cropBatchId], references: [id], onDelete: Cascade)
+  cropName       String
+  farmerName     String
+  farmLocation   String
+  harvestDate    DateTime
+  grade          String
+  shelfLifeHours Int
+  currentOwner   String
+  destination    String    @default("Direct Agri-Commerce Network")
+  transportType  String    @default("Direct Smart Freight")
+  qrCodeDataUrl  String?
+  provenanceJson String
+  createdAt      DateTime  @default(now())
+}
+
+// 16. Produce Quality Inspections Module
+model QualityInspection {
+  id                   String                   @id @default(uuid())
+  inspectionCode       String                   @unique
+  cropBatchId          String?
+  cropBatch            CropBatch?               @relation(fields: [cropBatchId], references: [id], onDelete: SetNull)
+  farmerId             String?
+  farmer               User?                    @relation(fields: [farmerId], references: [id], onDelete: SetNull)
+  cropName             String
+  overallScore         Float
+  grade                String                   // GRADE_A, GRADE_B, GRADE_C
+  estimatedPricePerKg  Float
+  estimatedPricePerQtl Float
+  priceRangeMinPerQtl  Float
+  priceRangeMaxPerQtl  Float
+  estimatedBatchValue  Float
+  referenceMarketName  String                   @default("Amravati APMC Cotton Yard")
+  referenceModalPrice  Float
+  imageQualityStatus   String                   @default("GOOD") // GOOD, ACCEPTABLE, POOR, UNUSABLE
+  images               QualityInspectionImage[]
+  observations         QualityObservation[]
+  disclaimer           String                   @default("AI visual assessment based on optical characteristics. Final commercial settlement subject to mandi arrival verification.")
+  createdAt            DateTime                 @default(now())
+}
+
+model QualityInspectionImage {
+  id             String            @id @default(uuid())
+  inspectionId   String
+  inspection     QualityInspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  imageUrl       String
+  exposureStatus String            @default("OPTIMAL") // UNDEREXPOSED, OPTIMAL, OVEREXPOSED
+  colorCast      String            @default("NATURAL") // NATURAL, WARM, COOL
+  isBlurry       Boolean           @default(false)
+  createdAt      DateTime          @default(now())
+}
+
+model QualityObservation {
+  id           String            @id @default(uuid())
+  inspectionId String
+  inspection   QualityInspection @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  featureName  String            // e.g. "Color & Pigment Index", "Fiber Whiteness / Lint Uniformity", "Surface Blemishes"
+  status       String            // DETECTED, NOT_DETECTED, NOT_ASSESSABLE
+  confidence   Float             // 0.0 to 1.0
+  detail       String?
+}
+
+model CropQualityProfile {
+  id                  String             @id @default(uuid())
+  cropName            String             @unique
+  category            String
+  primaryFeatureName  String             // e.g. "Staple Length", "Lycopene / Color Index", "Moisture %"
+  featureCriteriaJson String             // JSON rules describing defect thresholds
+  priceRules          QualityPriceRule[]
+  createdAt           DateTime           @default(now())
+}
+
+model QualityPriceRule {
+  id                     String             @id @default(uuid())
+  cropProfileId          String
+  cropProfile            CropQualityProfile @relation(fields: [cropProfileId], references: [id], onDelete: Cascade)
+  grade                  String             // GRADE_A, GRADE_B, GRADE_C
+  minQualityScore        Float
+  maxQualityScore        Float
+  priceAdjustmentPercent Float              // e.g. +5.0, 0.0, -8.0
+  description            String?
+}
+
+// Smart Crop Plans Module
+model CropPlan {
+  id                    String   @id @default(uuid())
+  farmerId              String
+  farmer                User     @relation(fields: [farmerId], references: [id], onDelete: Cascade)
+  farmId                String?
+  farm                  Farm?    @relation(fields: [farmId], references: [id], onDelete: SetNull)
+  cropName              String
+  hindiName             String?
+  marathiName           String?
+  season                String   @default("KHARIF")
+  plannedAcres          Float    @default(5.0)
+  expectedYieldQuintals Float
+  expectedGrossRevenue  Float
+  projectedNetProfit    Float
+  status                String   @default("PLANNED") // PLANNED, SOWN, HARVESTED, CANCELLED
+  sowingWindow          String?
+  notes                 String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// 17. Demand Forecasts Module
+model DemandForecast {
+  id                     String   @id @default(uuid())
+  regionId               String
+  region                 Region   @relation(fields: [regionId], references: [id], onDelete: Cascade)
+  cropName               String
+  currentDemandPercent   Int      @default(80)
+  predicted7dDemand      Int      @default(90)
+  predicted30dDemand     Int      @default(65)
+  supplyIndexPercent     Int      @default(60)
+  expectedShortageSurplus Int     @default(30)
+  alertLevel             String   @default("HIGH")
+  updatedAt              DateTime @default(now())
+}
+
+// 18. Market Data Module
+model Region {
+  id        String           @id @default(uuid())
+  name      String           @unique
+  state     String           @default("Maharashtra")
+  latitude  Float
+  longitude Float
+  markets   Market[]
+  forecasts DemandForecast[]
+}
+
+model Market {
+  id                 String        @id @default(uuid())
+  name               String
+  regionId           String
+  region             Region        @relation(fields: [regionId], references: [id], onDelete: Cascade)
+  latitude           Float
+  longitude          Float
+  distanceFromNashik Float         @default(0)
+  distanceFromPune   Float         @default(0)
+  transportCostPerKg Float         @default(3.0)
+  platformFeePerKg   Float         @default(1.0)
+  prices             MarketPrice[]
+}
+
+model MarketPrice {
+  id           String   @id @default(uuid())
+  marketId     String
+  market       Market   @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  cropName     String
+  grade        String   @default("GRADE_A")
+  pricePerKg   Float
+  trendPercent Float    @default(0.0)
+  date         DateTime @default(now())
+}
+
+// 19. Notifications Module
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  category  String   @default("AI") // MARKET, ORDERS, OFFERS, LOGISTICS, AI, SYSTEM
+  isRead    Boolean  @default(false)
+  actionUrl String?
+  createdAt DateTime @default(now())
+}
+
+// Financial Settlement Transactions
+model Transaction {
+  id                       String   @id @default(uuid())
+  orderId                  String   @unique
+  order                    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  cropName                 String
+  quantityKg               Float
+  consumerPricePerKg       Float
+  farmerPricePerKg         Float
+  transportCostPerKg       Float
+  storageCostPerKg         Float
+  processingCostPerKg      Float
+  retailCostPerKg          Float
+  platformFeePerKg         Float
+  otherIntermediaryCost    Float    @default(0)
+  farmerSharePercent       Float
+  consumerSavingsPercent   Float
+  intermediariesEliminated Int      @default(3)
+  createdAt                DateTime @default(now())
+}
+
+model ConsumerProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  address   String?
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: farm2market-ai
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: cd backend && node dist/index.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: farm2market-db
+          property: connectionString
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SERP_API_KEY
+        sync: false
+
+databases:
+  - name: farm2market-db
+    plan: free
+    databaseName: farm2market_db
+    user: farm2market
