@@ -10,7 +10,8 @@ import {
   NotificationItem,
 } from '../types';
 
-const API_BASE = '/api';
+const envApiUrl = (import.meta as any).env?.VITE_API_URL;
+const API_BASE = (envApiUrl ? String(envApiUrl).replace(/\/$/, '') : '') + '/api';
 
 function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem('farm2market_token');
