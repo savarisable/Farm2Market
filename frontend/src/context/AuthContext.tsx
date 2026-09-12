@@ -13,6 +13,7 @@ interface AuthContextType {
   register: (userData: any) => Promise<boolean>;
   logout: () => void;
   switchRole: (role: Role) => Promise<boolean>;
+  updateUser: (updatedUser: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -110,6 +111,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return demoLogin(targetRole);
   };
 
+  const updateUser = (updatedUser: User) => {
+    setUser(updatedUser);
+    localStorage.setItem('farm2market_user', JSON.stringify(updatedUser));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -123,6 +129,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         register,
         logout,
         switchRole,
+        updateUser,
       }}
     >
       {children}

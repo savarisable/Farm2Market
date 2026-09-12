@@ -161,7 +161,7 @@ export const LoginPage: React.FC = () => {
               <ArrowLeft className="w-3.5 h-3.5" /> Back to Home
             </button>
             <span className="flex items-center gap-1 text-emerald-700 font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5" /> 256-bit Encrypted
+              <ShieldCheck className="w-3.5 h-3.5" /> Direct Agri-Commerce Portal
             </span>
           </div>
         </Card>

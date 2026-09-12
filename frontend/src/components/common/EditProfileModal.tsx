@@ -12,7 +12,7 @@ interface EditProfileModalProps {
 }
 
 export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
-  const { user, role } = useAuth();
+  const { user, role, updateUser } = useAuth();
   const { t } = useLanguage();
 
   const [name, setName] = useState(user?.name || '');
@@ -45,12 +45,11 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onCl
       });
 
       if (res && res.success && res.user) {
-        // Update local storage
-        localStorage.setItem('farm2market_user', JSON.stringify(res.user));
+        updateUser(res.user);
         setSuccessMsg(t('saveChanges') + ' ✓');
         setTimeout(() => {
-          window.location.reload(); // Refresh to update persistent state
-        }, 600);
+          onClose();
+        }, 800);
       } else {
         setErrorMsg(res?.message || 'Failed to update profile');
       }

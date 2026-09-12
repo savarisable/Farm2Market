@@ -86,13 +86,20 @@ export const FarmerDashboard: React.FC = () => {
     setIsPassportOpen(true);
   };
 
+  const getGreetingText = () => {
+    const hour = new Date().getHours();
+    if (hour >= 12 && hour < 17) return t('goodAfternoon');
+    if (hour >= 17) return t('goodEvening');
+    return t('goodMorning');
+  };
+
   return (
     <div className="space-y-6">
       {/* Header Greeting */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {t('goodMorning')}, {user?.name || 'Pranav'} 👋
+            {getGreetingText()}, {user?.name || 'Farmer'} 👋
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
             {t('farmHolding')}: <strong className="text-slate-700">{user?.farmerProfile?.farmSizeAcres || 5.0} {t('acres')}</strong> {t('inLocation')}{' '}

@@ -90,6 +90,10 @@ const translations: Record<SupportedLanguage, Record<string, string>> = {
 
     // Dashboard Greetings & Cards
     goodMorning: 'Good morning',
+    goodAfternoon: 'Good afternoon',
+    goodEvening: 'Good evening',
+    docaTagline: 'Government of India — Department of Consumer Affairs (DoCA)',
+    heroSub: 'Direct Agri-Commerce Engine connecting farmers, buyers, and FPOs with AI quality grading and fair price protection.',
     farmHolding: 'Farm holding',
     acres: 'Acres',
     inLocation: 'in',
@@ -319,7 +323,11 @@ const translations: Record<SupportedLanguage, Record<string, string>> = {
     allCaughtUp: 'कोई नई सूचना नहीं है!',
 
     // Dashboard Greetings & Cards
-    goodMorning: 'सुप्रभात',
+    goodMorning: 'शुभ प्रभात',
+    goodAfternoon: 'शुभ दोपहर',
+    goodEvening: 'शुभ संध्या',
+    docaTagline: 'भारत सरकार — उपभोक्ता मामले विभाग (DoCA)',
+    heroSub: 'एआई गुणवत्ता ग्रेडिंग और उचित मूल्य सुरक्षा के साथ किसानों, खरीदारों और एफपीओ को जोड़ने वाला प्रत्यक्ष कृषि-वाणिज्य इंजन।',
     farmHolding: 'खेत का रकबा',
     acres: 'एकड़',
     inLocation: 'स्थान',
@@ -550,7 +558,11 @@ const translations: Record<SupportedLanguage, Record<string, string>> = {
     allCaughtUp: 'कोणतीही नवीन सूचना नाही!',
 
     // Dashboard Greetings & Cards
-    goodMorning: 'सुप्रभात',
+    goodMorning: 'शुभ सकाळ',
+    goodAfternoon: 'शुभ दुपार',
+    goodEvening: 'शुभ संध्याकाळ',
+    docaTagline: 'भारत सरकार — ग्राहक व्यवहार विभाग (DoCA)',
+    heroSub: 'एआय गुणवत्ता श्रेणी आणि वाजवी भाव संरक्षणासह शेतकरी, खरेदीदार आणि FPO यांना जोडणारे थेट कृषी-वाणिज्य इंजिन।',
     farmHolding: 'शेतीचे क्षेत्र',
     acres: 'एकर',
     inLocation: 'येथे',
