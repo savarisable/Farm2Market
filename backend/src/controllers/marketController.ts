@@ -40,7 +40,7 @@ export async function getMarketPrices(req: Request, res: Response) {
       include: { market: { include: { region: true } } },
       orderBy: { date: 'desc' },
     });
-    return res.json({ success: true, prices });
+    return res.json({ success: true, prices, marketPrices: prices });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
   }
