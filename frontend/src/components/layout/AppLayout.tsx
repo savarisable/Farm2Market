@@ -11,9 +11,17 @@ import { getNotificationsApi } from '../../services/api';
 export const AppLayout: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  // Close mobile sidebar when resizing to desktop
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 1024) setIsMobileOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   // Fetch real unread notification count
   useEffect(() => {
@@ -47,16 +55,31 @@ export const AppLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      {/* Persistent Sidebar */}
-      <Sidebar
-        isCollapsed={isCollapsed}
-        setIsCollapsed={setIsCollapsed}
-        onOpenProfile={() => setIsProfileOpen(true)}
-      />
+      {/* Mobile overlay backdrop */}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
 
-      {/* Main Content Area */}
+      {/* Sidebar — slides in as overlay on mobile, fixed on desktop */}
       <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+        className={`fixed top-0 left-0 z-40 h-screen transition-transform duration-300
+          ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0`}
+      >
+        <Sidebar
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+          onOpenProfile={() => { setIsProfileOpen(true); setIsMobileOpen(false); }}
+          onNavClick={() => setIsMobileOpen(false)}
+        />
+      </div>
+
+      {/* Main Content Area — full width on mobile, offset sidebar width on desktop */}
+      <div
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 lg:${
           isCollapsed ? 'pl-20' : 'pl-64'
         }`}
       >
@@ -65,10 +88,11 @@ export const AppLayout: React.FC = () => {
           onOpenNotifications={() => setIsNotificationsOpen(true)}
           unreadNotificationsCount={unreadCount}
           onOpenProfile={() => setIsProfileOpen(true)}
+          onOpenMobileSidebar={() => setIsMobileOpen(true)}
         />
 
         {/* Page Content Viewport */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-3 sm:p-4 lg:p-6 xl:p-8 max-w-7xl w-full mx-auto">
           <Outlet />
         </main>
       </div>

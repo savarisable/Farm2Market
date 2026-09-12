@@ -2,19 +2,21 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { Role, SupportedLanguage } from '../../types';
-import { Search, Bell, MapPin, Globe, ChevronDown, Check, User as UserIcon } from 'lucide-react';
+import { Search, Bell, MapPin, Globe, ChevronDown, Check, User as UserIcon, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TopbarProps {
   onOpenNotifications: () => void;
   unreadNotificationsCount?: number;
   onOpenProfile?: () => void;
+  onOpenMobileSidebar?: () => void;
 }
 
 export const Topbar: React.FC<TopbarProps> = ({
   onOpenNotifications,
   unreadNotificationsCount = 0,
   onOpenProfile,
+  onOpenMobileSidebar,
 }) => {
 
   const { user, role } = useAuth();
@@ -43,9 +45,18 @@ export const Topbar: React.FC<TopbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 flex items-center justify-between shadow-xs">
+    <header className="sticky top-0 z-30 h-14 sm:h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-3 sm:px-6 flex items-center justify-between shadow-xs gap-2">
+      {/* Mobile Hamburger — visible only on mobile */}
+      <button
+        onClick={onOpenMobileSidebar}
+        className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors flex-shrink-0"
+        aria-label="Open navigation"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
       {/* Search Input */}
-      <div className="relative w-72 sm:w-96">
+      <div className="relative flex-1 min-w-0 max-w-xs sm:max-w-sm lg:max-w-md">
         <form onSubmit={handleSearchSubmit}>
           <div className="relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />

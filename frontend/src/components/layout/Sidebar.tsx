@@ -31,9 +31,10 @@ interface SidebarProps {
   isCollapsed: boolean;
   setIsCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
   onOpenProfile?: () => void;
+  onNavClick?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed, onOpenProfile }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed, onOpenProfile, onNavClick }) => {
   const { user, role, logout } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
@@ -166,6 +167,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed, o
               <NavLink
                 key={item.to}
                 to={item.to}
+                onClick={onNavClick}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                     isActive
