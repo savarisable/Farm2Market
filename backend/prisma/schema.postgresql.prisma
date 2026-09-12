@@ -3,14 +3,12 @@
 // 2. Run: npx prisma migrate dev --name init_postgresql --schema=prisma/schema.postgresql.prisma
 
 datasource db {
-  provider   = "postgresql"
-  url        = env("DATABASE_URL")
-  extensions = [postgis]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions"]
+  provider = "prisma-client-js"
 }
 
 // 1. Users Module

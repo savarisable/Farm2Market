@@ -3,8 +3,8 @@ services:
     name: farm2market-ai
     env: node
     plan: free
-    buildCommand: npm install && npm run build
-    startCommand: cd backend && node dist/index.js
+    buildCommand: npm --prefix backend install && npm --prefix frontend install && cp backend/prisma/schema.postgresql.prisma backend/prisma/schema.prisma && npx --prefix backend prisma generate && npm run build
+    startCommand: npx --prefix backend prisma db push --accept-data-loss && npx --prefix backend tsx prisma/seed.ts && cd backend && node dist/index.js
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
