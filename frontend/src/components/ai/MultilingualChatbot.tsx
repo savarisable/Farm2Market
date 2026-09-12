@@ -47,7 +47,7 @@ export const MultilingualChatbot: React.FC = () => {
   const initialPrompts: Record<SupportedLanguage, { welcome: string; chips: string[] }> = {
     mr: {
       welcome:
-        "नमस्कार शेतकरी बंधूंनो! मी **Farm2Market AI फेअर प्राईस सल्लागार** आहे 🌾\n\nजेव्हा कोणताही खरेदीदार तुम्हाला पिकाचा दर ऑफर करतो, तेव्हा आम्ही तात्काळ घाऊक बाजारभाव आणि दर्जा तपासून **वाजवी भाव (Fair Price)** सांगतो. जर भाव कमी असेल, तर आम्ही तात्काळ सावध करतो जेणेकरून तुमची फसवणूक होणार नाही!",
+        "नमस्कार शेतकरी बंधूंनो! मी **Farm2Market SmartMandi फेअर प्राईस सल्लागार** आहे 🌾\n\nजेव्हा कोणताही खरेदीदार तुम्हाला पिकाचा दर ऑफर करतो, तेव्हा आम्ही तात्काळ घाऊक बाजारभाव आणि दर्जा तपासून **वाजवी भाव (Fair Price)** सांगतो. जर भाव कमी असेल, तर आम्ही तात्काळ सावध करतो जेणेकरून तुमची फसवणूक होणार नाही!",
       chips: [
         'टोमॅटोसाठी ₹२१ ची ऑफर योग्य आहे का?',
         'पुण्यातील कांदा खरेदीदार कोण आहेत?',
@@ -57,7 +57,7 @@ export const MultilingualChatbot: React.FC = () => {
     },
     hi: {
       welcome:
-        "नमस्ते किसान भाइयों! मैं आपका **Farm2Market AI फेयर प्राइस सलाहकार** हूँ 🌾\n\nजब कोई खरीदार आपको किसी फसल की कीमत ऑफर करता है, तो हम तुरंत बाजार औसत, आसपास की मंडियों और क्वालिटी बेंचमार्क से तुलना करते हैं। यदि ऑफर अनुचित है, तो हम तुरंत अलर्ट करते हैं ताकि आप नुकसान से बच सकें!",
+        "नमस्ते किसान भाइयों! मैं आपका **Farm2Market SmartMandi फेयर प्राइस सलाहकार** हूँ 🌾\n\nजब कोई खरीदार आपको किसी फसल की कीमत ऑफर करता है, तो हम तुरंत बाजार औसत, आसपास की मंडियों और क्वालिटी बेंचमार्क से तुलना करते हैं। यदि ऑफर अनुचित है, तो हम तुरंत अलर्ट करते हैं ताकि आप नुकसान से बच सकें!",
       chips: [
         'क्या टमाटर के लिए ₹21 का ऑफर सही है?',
         'पुणे के सत्यापित खरीदार दिखाएं',
@@ -67,7 +67,7 @@ export const MultilingualChatbot: React.FC = () => {
     },
     en: {
       welcome:
-        "Hello! I am your **Farm2Market AI Fair Price Advisor** 🌾\n\nWhere our AI adds real value is the **Fair Price Engine** — when a buyer makes an offer, we instantly compare it against market averages, nearby mandis, and quality benchmarks. If an offer is below fair value, we flag it in real time so you never accept a bad deal due to information asymmetry!",
+        "Hello! I am your **Farm2Market SmartMandi Fair Price Advisor** 🌾\n\nWhere our AI adds real value is the **Fair Price Engine** — when a buyer makes an offer, we instantly compare it against market averages, nearby mandis, and quality benchmarks. If an offer is below fair value, we flag it in real time so you never accept a bad deal due to information asymmetry!",
       chips: [
         'Is ₹21/kg fair for Grade A Tomato?',
         'Find verified buyers in Pune and Mumbai',

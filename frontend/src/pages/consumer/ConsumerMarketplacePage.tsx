@@ -187,7 +187,7 @@ export const ConsumerMarketplacePage: React.FC = () => {
               <strong className="text-emerald-700">₹{orderReceipt.totalAmount}</strong>
             </p>
             <p className="text-xs text-emerald-800 bg-emerald-50 p-2.5 rounded-lg border border-emerald-200">
-              🎉 By buying direct on Farm2Market AI, you saved ₹{orderReceipt.farmerShareSaved} and ensured the farmer received 68% of the transaction.
+              🎉 By buying direct on Farm2Market SmartMandi, you saved ₹{orderReceipt.farmerShareSaved} and ensured the farmer received 68% of the transaction.
             </p>
             <div className="pt-3">
               <Button

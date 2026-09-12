@@ -167,7 +167,7 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({
 
           {/* Footer */}
           <div className="p-3 bg-slate-50 border-t border-slate-100 text-center">
-            <p className="text-[11px] text-slate-400">Farm2Market AI Real-time Decision Feed</p>
+            <p className="text-[11px] text-slate-400">Farm2Market SmartMandi Real-time Decision Feed</p>
           </div>
         </div>
       </div>

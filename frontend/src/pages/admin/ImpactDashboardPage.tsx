@@ -59,7 +59,7 @@ export default function ImpactDashboardPage() {
     { stage: 'Wholesaler / Secondary Trader', traditional: 18, farm2market: 0, label: 'Middleman 3 (Eliminated)' },
     { stage: 'Consolidated Cold Logistics', traditional: 14, farm2market: 12, label: 'Direct Corridors' },
     { stage: 'Urban Hub & Micro-Retail', traditional: 23, farm2market: 15, label: 'Direct Distribution' },
-    { stage: 'Platform Tech & Escrow', traditional: 0, farm2market: 5, label: 'Farm2Market AI' },
+    { stage: 'Platform Tech & Escrow', traditional: 0, farm2market: 5, label: 'Farm2Market SmartMandi' },
   ];
 
   const projectionData = [

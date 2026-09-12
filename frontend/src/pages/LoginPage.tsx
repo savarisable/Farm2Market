@@ -50,7 +50,7 @@ export const LoginPage: React.FC = () => {
             <span className="text-3xl">🌾</span>
             <div className="text-left">
               <span className="text-xl font-extrabold text-forest-950 tracking-tight leading-none block">
-                Farm2Market <span className="text-agri-600">AI</span>
+                Farm2Market <span className="text-agri-600">SmartMandi</span>
               </span>
               <span className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase block">
                 Department of Consumer Affairs (DoCA)

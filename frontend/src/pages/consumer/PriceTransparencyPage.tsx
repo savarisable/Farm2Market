@@ -112,7 +112,7 @@ export default function PriceTransparencyPage() {
           </h1>
           <p className="text-emerald-100 text-base leading-relaxed">
             In conventional agricultural supply chains, up to 6 layers of intermediaries extract 70%+ of consumer rupees.
-            Farm2Market AI routes farm produce directly from source farms and FPOs to end consumers with mathematically transparent economics.
+            Farm2Market SmartMandi routes farm produce directly from source farms and FPOs to end consumers with mathematically transparent economics.
           </p>
           <div className="mt-6 flex flex-wrap gap-4 items-center">
             <Link to="/consumer-market">
