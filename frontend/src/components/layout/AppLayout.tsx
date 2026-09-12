@@ -79,8 +79,8 @@ export const AppLayout: React.FC = () => {
 
       {/* Main Content Area — full width on mobile, offset sidebar width on desktop */}
       <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 lg:${
-          isCollapsed ? 'pl-20' : 'pl-64'
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+          isCollapsed ? 'lg:pl-20' : 'lg:pl-64'
         }`}
       >
         {/* Persistent Topbar */}
