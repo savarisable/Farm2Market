@@ -301,21 +301,21 @@ export const NegotiationPage: React.FC = () => {
               {/* Action Buttons */}
               <div className="mt-5 pt-4 border-t border-forest-800/80 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <Button
-                  variant="outline"
+                  variant="darkOutline"
                   size="md"
                   onClick={handleAccept}
                   isLoading={isProcessing}
-                  className="w-full sm:w-auto border-forest-700 bg-forest-900/80 text-white hover:bg-forest-800"
+                  className="w-full sm:w-auto"
                 >
                   {t('acceptOfferBtn')} (₹{offeredPrice}/kg)
                 </Button>
 
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                   <Button
-                    variant="outline"
+                    variant="darkOutline"
                     size="md"
                     onClick={() => setIsCustomModalOpen(true)}
-                    className="w-full sm:w-auto border-forest-700 bg-forest-900/80 text-white hover:bg-forest-800"
+                    className="w-full sm:w-auto"
                   >
                     {t('customCounter')}
                   </Button>
@@ -324,7 +324,7 @@ export const NegotiationPage: React.FC = () => {
                     size="md"
                     onClick={() => handleQuickCounter(demandAdjusted)}
                     isLoading={isProcessing}
-                    className="w-full sm:w-auto font-bold bg-agri-500 hover:bg-agri-400 text-forest-950 shadow-md"
+                    className="w-full sm:w-auto"
                   >
                     {t('counterOfferBtn')} (₹{demandAdjusted}/kg)
                   </Button>
