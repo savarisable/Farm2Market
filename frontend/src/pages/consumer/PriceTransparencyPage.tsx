@@ -116,13 +116,13 @@ export default function PriceTransparencyPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-4 items-center">
             <Link to="/consumer-market">
-              <Button variant="primary" className="bg-white text-emerald-800 hover:bg-emerald-50 border-none font-bold shadow-lg">
+              <Button variant="emerald" size="md" className="font-bold shadow-lg">
                 <ShoppingBag className="w-4 h-4 mr-2" />
                 Shop Farm-Fresh Produce
               </Button>
             </Link>
             <Link to="/verify-passport/MH-NAS-TOM-26091">
-              <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 font-semibold">
+              <Button variant="darkOutline" size="md" className="font-semibold">
                 <QrCode className="w-4 h-4 mr-2 text-emerald-300" />
                 Scan Crop QR Passport
               </Button>
@@ -133,7 +133,7 @@ export default function PriceTransparencyPage() {
 
       {/* Top 3 Core Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="border-l-4 border-l-emerald-500 hover:shadow-md transition-shadow">
+        <Card className="p-5 sm:p-6 border-l-4 border-l-emerald-500 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Farmer Price Realization</p>
@@ -150,7 +150,7 @@ export default function PriceTransparencyPage() {
           </div>
         </Card>
 
-        <Card className="border-l-4 border-l-sky-500 hover:shadow-md transition-shadow">
+        <Card className="p-5 sm:p-6 border-l-4 border-l-sky-500 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Intermediary Layers</p>
@@ -167,7 +167,7 @@ export default function PriceTransparencyPage() {
           </div>
         </Card>
 
-        <Card className="border-l-4 border-l-amber-500 hover:shadow-md transition-shadow">
+        <Card className="p-5 sm:p-6 border-l-4 border-l-amber-500 hover:shadow-md transition-shadow">
           <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Consumer Net Savings</p>
