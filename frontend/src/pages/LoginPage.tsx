@@ -81,12 +81,12 @@ export const LoginPage: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Email or Mobile ID</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Username, Email, or Mobile ID</label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
-                  type="email"
-                  placeholder="e.g. farmer@farm2market.ai"
+                  type="text"
+                  placeholder="e.g. fam1, byer1, fpo1, or admin1"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -114,6 +114,43 @@ export const LoginPage: React.FC = () => {
               Sign In to Portal
             </Button>
           </form>
+
+          {/* Quick Demo Fill Buttons */}
+          <div className="mt-6 pt-4 border-t border-slate-200">
+            <p className="text-[11px] font-bold text-slate-500 mb-2 uppercase tracking-wider text-center">
+              ⚡ Quick Demo 1-Click Fill
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => { setEmail('fam1'); setPassword('farmer@123'); }}
+                className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-[11px] font-semibold text-slate-700 text-left transition-colors cursor-pointer"
+              >
+                🌾 Farmer <span className="block text-[9px] text-slate-400 font-normal">fam1 / farmer@123</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => { setEmail('byer1'); setPassword('byer123'); }}
+                className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-[11px] font-semibold text-slate-700 text-left transition-colors cursor-pointer"
+              >
+                🛒 Buyer <span className="block text-[9px] text-slate-400 font-normal">byer1 / byer123</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => { setEmail('fpo1'); setPassword('fpo123'); }}
+                className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-[11px] font-semibold text-slate-700 text-left transition-colors cursor-pointer"
+              >
+                🏢 FPO <span className="block text-[9px] text-slate-400 font-normal">fpo1 / fpo123</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => { setEmail('admin1'); setPassword('admin123'); }}
+                className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 text-[11px] font-semibold text-slate-700 text-left transition-colors cursor-pointer"
+              >
+                🛡️ Admin <span className="block text-[9px] text-slate-400 font-normal">admin1 / admin123</span>
+              </button>
+            </div>
+          </div>
 
           <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
             <button
