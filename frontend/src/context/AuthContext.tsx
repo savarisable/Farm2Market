@@ -10,7 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, pass: string) => Promise<boolean>;
   demoLogin: (role: Role) => Promise<boolean>;
-  register: (userData: any) => Promise<boolean>;
+  register: (userData: any) => Promise<{ success: boolean; message?: string }>;
   logout: () => void;
   switchRole: (role: Role) => Promise<boolean>;
   updateUser: (updatedUser: User) => void;
@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const register = async (userData: any): Promise<boolean> => {
+  const register = async (userData: any): Promise<{ success: boolean; message?: string }> => {
     setIsLoading(true);
     try {
       const res = await registerApi(userData);
@@ -90,11 +90,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(res.user);
         localStorage.setItem('farm2market_token', res.token);
         localStorage.setItem('farm2market_user', JSON.stringify(res.user));
-        return true;
+        return { success: true };
       }
-      return false;
-    } catch (e) {
-      return false;
+      return { success: false, message: res.message || 'Registration failed.' };
+    } catch (e: any) {
+      return { success: false, message: e?.response?.data?.message || e.message || 'Registration failed.' };
     } finally {
       setIsLoading(false);
     }

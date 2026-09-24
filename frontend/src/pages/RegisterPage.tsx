@@ -47,15 +47,15 @@ export const RegisterPage: React.FC = () => {
       fpoName,
     };
 
-    const success = await register(payload);
-    if (success) {
+    const res = await register(payload);
+    if (res.success) {
       if (role === 'FARMER') navigate('/dashboard');
       else if (role === 'BUYER') navigate('/buyer');
       else if (role === 'FPO') navigate('/fpo');
       else if (role === 'CONSUMER') navigate('/consumer');
       else navigate('/admin');
     } else {
-      setError('Registration failed. Please check your inputs or try a different email.');
+      setError(res.message || 'Registration failed. Please check your inputs or try a different email.');
     }
   };
 
@@ -65,7 +65,7 @@ export const RegisterPage: React.FC = () => {
         <Link to="/" className="inline-flex items-center gap-2 cursor-pointer">
           <span className="text-3xl">🌾</span>
           <span className="text-xl font-extrabold tracking-tight text-slate-900">
-            Farm2Market <span className="text-agri-600">AI</span>
+            Farm2Market <span className="text-agri-600">SmartMandi</span>
           </span>
         </Link>
         <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-900">Create your account</h2>
