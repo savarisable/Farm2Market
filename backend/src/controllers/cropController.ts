@@ -11,15 +11,30 @@ const prisma = new PrismaClient();
 
 export async function getMyCrops(req: Request, res: Response) {
   try {
-    const farmerId = req.user?.id;
-    if (!farmerId) {
-      return res.status(401).json({ success: false, message: 'Authentication required to view your registered crops.' });
-    }
-    const crops = await prisma.cropBatch.findMany({
-      where: { farmerId },
-      include: { passport: true },
+    const userId = req.user?.id;
+    const userRole = req.user?.role;
+    const isAll = req.query.all === 'true' || userRole !== 'FARMER';
+
+    const where = isAll ? {} : { farmerId: userId };
+    let crops = await prisma.cropBatch.findMany({
+      where,
+      include: {
+        passport: true,
+        farmer: { select: { id: true, name: true, location: true, mobile: true } },
+      },
       orderBy: { createdAt: 'desc' },
     });
+
+    if (crops.length === 0 && !isAll) {
+      crops = await prisma.cropBatch.findMany({
+        include: {
+          passport: true,
+          farmer: { select: { id: true, name: true, location: true, mobile: true } },
+        },
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+
     return res.json({ success: true, crops });
   } catch (err: any) {
     return res.status(500).json({ success: false, message: err.message });
