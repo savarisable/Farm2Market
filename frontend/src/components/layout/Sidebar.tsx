@@ -103,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, setIsCollapsed, o
 
   return (
     <aside
-      className={`fixed top-0 left-0 z-40 h-screen transition-all duration-300 bg-forest-950 text-white border-r border-forest-900 flex flex-col justify-between ${
+      className={`h-full transition-all duration-300 bg-forest-950 text-white border-r border-forest-900 flex flex-col justify-between ${
         isCollapsed ? 'w-20' : 'w-64'
       }`}
     >
