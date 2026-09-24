@@ -16,7 +16,7 @@ export function createServer() {
   app.get('/api/health', (req, res) => {
     res.json({
       status: 'HEALTHY',
-      service: 'Farm2Market AI API',
+      service: 'Farm2Market SmartMandi API',
       problemStatementId: '26033',
       ministry: 'Ministry of Consumer Affairs, Food & Public Distribution (DoCA)',
       timestamp: new Date().toISOString(),
