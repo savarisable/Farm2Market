@@ -13,13 +13,13 @@
 
 | Field | Details |
 |---|---|
-| **Problem Statement ID** | **26033** |
-| **Problem Statement** | *"Multiple intermediaries reduce farmers earnings and increase consumer prices."* |
-| **Organization** | Ministry of Consumer Affairs, Food & Public Distribution |
-| **Department** | Department of Consumer Affairs (DoCA) |
+| **Problem Statement ID** | **26193** |
+| **Problem Statement** | *"Student Innovation-Developing solutions,keeping in mind the need to enhance the primary sector of India-Agriculture and to manage and processour agriculture produce"* |
+| **Organization** | AICTE |
+| **Department** | AICTE, MIC Student Innovation |
 | **Category** | Software |
 | **Theme** | Agriculture, FoodTech & Rural Development |
-| **Project Title** | **Farm2Market AI** |
+| **Project Title** | **Farm2Market** |
 
 ---
 
