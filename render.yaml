@@ -3,7 +3,7 @@ services:
     name: farm2market-smartmandi
     env: node
     plan: free
-    buildCommand: cd backend && npm install && cp prisma/schema.postgresql.prisma prisma/schema.prisma && npx prisma generate && npm run build && cd ../frontend && npm install && npm run build && cd ..
+       buildCommand: cd backend && npm install && npx prisma generate && npm run build && cd ../frontend && npm install && npm run build && cd ..
     startCommand: cd backend && npx prisma db push --accept-data-loss && npx tsx prisma/seed.ts && node dist/index.js
     healthCheckPath: /api/health
     envVars:
